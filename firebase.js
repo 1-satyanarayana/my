@@ -50,8 +50,8 @@ const storage = getStorage(app);
 
 export function adminLogin(username, password) {
   // Hardcoded admin credentials
-  const ADMIN_USERNAME = "admin";
-  const ADMIN_PASSWORD = "Admin@123";
+  const ADMIN_USERNAME = "Mycareer";
+  const ADMIN_PASSWORD = "Mycareer@123";
 
   return new Promise((resolve, reject) => {
     if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
@@ -63,7 +63,7 @@ export function adminLogin(username, password) {
   });
 }
 
-export function studentLogin(userId, password) {
+export function studentLogin(userId, password, collegeName) {
   return new Promise(async (resolve, reject) => {
     try {
       const q = query(
@@ -80,7 +80,17 @@ export function studentLogin(userId, password) {
       const student = querySnapshot.docs[0];
       const studentData = student.data();
 
+      // If college was passed and student has a college, ensure they match (case-insensitive)
+      if (collegeName && studentData.college && studentData.college.toLowerCase() !== collegeName.toLowerCase()) {
+        reject({ message: "Invalid College Name" });
+        return;
+      }
+
       if (studentData.password === password) {
+        // Temporarily store the passed college so profile completion can use it
+        if (!studentData.college && collegeName) {
+          studentData.college = collegeName;
+        }
         localStorage.setItem("studentLoggedIn", "true");
         localStorage.setItem("studentId", student.id);
         localStorage.setItem("studentData", JSON.stringify(studentData));
@@ -107,7 +117,7 @@ export function studentLogout() {
   localStorage.removeItem("studentLoggedIn");
   localStorage.removeItem("studentId");
   localStorage.removeItem("studentData");
-  window.location.href = "student.html?logout=true";
+  window.location.href = "student.html";
 }
 
 export function isAdminLoggedIn() {
@@ -120,17 +130,36 @@ export function isStudentLoggedIn() {
 
 // =============== STUDENT MANAGEMENT ===============
 
-export function uploadStudents(students) {
-  return Promise.all(
-    students.map((student) => {
-      return addDoc(collection(db, "students"), {
+export async function uploadStudents(students) {
+  const results = [];
+  const currentStudents = await getDocs(collection(db, "students"));
+  let currentCount = currentStudents.size;
+  const LIMIT = 2000;
+
+  for (const student of students) {
+    if (currentCount >= LIMIT) {
+      throw new Error(`Login limit reached! Maximum ${LIMIT} students allowed.`);
+    }
+
+    // Check for duplicate userId
+    const q = query(collection(db, "students"), where("userId", "==", student.userId));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      const docRef = await addDoc(collection(db, "students"), {
         userId: student.userId,
         password: student.password,
+        college: student.collegeName || student.college || "",
         createdAt: serverTimestamp(),
         profileCompleted: false,
       });
-    }),
-  );
+      currentCount++;
+      results.push({ id: docRef.id, status: 'added' });
+    } else {
+      results.push({ userId: student.userId, status: 'skipped (duplicate)' });
+    }
+  }
+  return results;
 }
 
 export function getStudents() {
@@ -262,13 +291,12 @@ export async function deleteFile(fileUrl) {
 
 export function showToast(message, type = "info") {
   const toast = document.createElement("div");
-  toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg text-white font-medium z-50 animate-in fade-in slide-in-from-bottom-4 ${
-    type === "success"
-      ? "bg-green-500"
-      : type === "error"
-        ? "bg-red-500"
-        : "bg-blue-500"
-  }`;
+  toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg text-white font-medium z-50 animate-in fade-in slide-in-from-bottom-4 ${type === "success"
+    ? "bg-green-500"
+    : type === "error"
+      ? "bg-red-500"
+      : "bg-blue-500"
+    }`;
   toast.textContent = message;
   document.body.appendChild(toast);
 
@@ -378,7 +406,19 @@ export async function searchStudents(query) {
 
 // =============== EXAM MARKS ===============
 
-export function addMarks(marksData) {
+export async function addMarks(marksData) {
+  // Check for duplicate: same User ID and same Exam Name
+  const q = query(
+    collection(db, "marks"),
+    where("userId", "==", marksData.userId),
+    where("examName", "==", marksData.examName)
+  );
+  const querySnapshot = await getDocs(q);
+
+  if (!querySnapshot.empty) {
+    throw new Error(`Duplicate entry: Results for User ID ${marksData.userId} in "${marksData.examName}" already exist.`);
+  }
+
   return addDoc(collection(db, "marks"), {
     ...marksData,
     createdAt: serverTimestamp(),
