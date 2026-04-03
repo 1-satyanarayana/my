@@ -1,425 +1,231 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Exam Management System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-      * {
-        font-family: "Poppins", sans-serif;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exam Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+    * {
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .smooth-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+    }
+
+    .floating {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
       }
 
-      body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        overflow-x: hidden;
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
       }
 
-      .glass-effect {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.3;
+    }
+
+    .blob-1 {
+      width: 200px;
+      height: 200px;
+      background: #667eea;
+      top: -50px;
+      left: -100px;
+      animation: blobMove 8s ease-in-out infinite;
+    }
+
+    .blob-2 {
+      width: 300px;
+      height: 300px;
+      background: #764ba2;
+      bottom: -100px;
+      right: -50px;
+      animation: blobMove 8s ease-in-out infinite reverse;
+    }
+
+    @keyframes blobMove {
+
+      0%,
+      100% {
+        transform: translate(0, 0);
       }
 
-      .gradient-text {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+      50% {
+        transform: translate(30px, -30px);
       }
+    }
 
-      .smooth-transition {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
+    .feature-card {
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      border-radius: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      text-align: center;
+    }
 
-      .card-hover {
-        transition: all 0.3s ease;
-      }
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
 
-      .card-hover:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
-      }
+<body>
+  <!-- Animated Background -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
 
-      .floating {
-        animation: float 3s ease-in-out infinite;
-      }
+  <!-- Navigation -->
+  <nav class="relative z-10 px-4 md:px-8 py-6">
+    <div class="flex justify-center items-center">
+      <img src="logo.png" alt="Logo" class="h-32 md:h-48 lg:h-64 w-auto rounded-xl shadow-lg border-2 border-white/20">
+    </div>
+  </nav>
 
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-20px);
-        }
-      }
-
-      .animate-fade-in {
-        animation: fadeInUp 0.8s ease-out;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .blob {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(40px);
-        opacity: 0.3;
-      }
-
-      .blob-1 {
-        width: 200px;
-        height: 200px;
-        background: #667eea;
-        top: -50px;
-        left: -100px;
-        animation: blobMove 8s ease-in-out infinite;
-      }
-
-      .blob-2 {
-        width: 300px;
-        height: 300px;
-        background: #764ba2;
-        bottom: -100px;
-        right: -50px;
-        animation: blobMove 8s ease-in-out infinite reverse;
-      }
-
-      @keyframes blobMove {
-        0%,
-        100% {
-          transform: translate(0, 0);
-        }
-        50% {
-          transform: translate(30px, -30px);
-        }
-      }
-
-      .feature-card {
-        display: flex;
-        flex-direction: column;
-        padding: 2rem;
-        border-radius: 1rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: white;
-        text-align: center;
-      }
-
-      .feature-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Animated Background -->
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-
-    <!-- Navigation -->
-    <nav class="relative z-10 px-4 md:px-8 py-6">
-      <div class="flex justify-between items-center">
-        <div class="text-3xl font-bold text-white">
-          <i class="fas fa-graduation-cap mr-2"></i> Exam Manager
+  <!-- Hero Section -->
+  <div class="relative z-10 min-h-screen flex items-center justify-center px-4 md:px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl">
+      <!-- Left Content -->
+      <div class="animate-fade-in">
+        <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+          Modern Exam Management System
+        </h1>
+        <p class="text-xl text-gray-100 mb-8">
+          A comprehensive platform for managing exams, students, and results
+          with a beautiful, modern interface.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+          <a href="admin.html"
+            class="flex items-center justify-center px-8 py-4 bg-white text-purple-600 font-bold rounded-lg hover:shadow-lg smooth-transition">
+            <i class="fas fa-lock mr-2"></i> Admin Panel
+          </a>
+          <a href="student.html"
+            class="flex items-center justify-center px-8 py-4 bg-purple-600 text-white font-bold rounded-lg border-2 border-white hover:bg-white hover:text-purple-600 smooth-transition">
+            <i class="fas fa-graduation-cap mr-2"></i> Student Portal
+          </a>
         </div>
-        <div class="hidden md:flex items-center gap-4">
-          <a
-            href="#features"
-            class="text-white hover:text-gray-200 smooth-transition"
-            >Features</a
-          >
-          <a
-            href="#about"
-            class="text-white hover:text-gray-200 smooth-transition"
-            >About</a
-          >
-        </div>
+        <!-- <div class="grid grid-cols-3 gap-6 mt-12">
+          <div>
+            <p class="text-3xl font-bold text-white">100%</p>
+            <p class="text-gray-200 text-sm">Responsive</p>
+          </div>
+          <div>
+            <p class="text-3xl font-bold text-white">⚡</p>
+            <p class="text-gray-200 text-sm">Fast & Secure</p>
+          </div>
+          <div>
+            <p class="text-3xl font-bold text-white">🔥</p>
+            <p class="text-gray-200 text-sm">Ready</p>
+
+          </div>
+      </div> -->
       </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <div
-      class="relative z-10 min-h-screen flex items-center justify-center px-4 md:px-8 py-12"
-    >
-      <div
-        class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl"
-      >
-        <!-- Left Content -->
-        <div class="animate-fade-in">
-          <h1
-            class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight"
-          >
-            Modern Exam <span class="gradient-text">Management</span> System
-          </h1>
-          <p class="text-xl text-gray-100 mb-8">
-            A comprehensive platform for managing exams, students, and results
-            with a beautiful, modern interface.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 mb-8">
-            <a
-              href="admin.html"
-              class="flex items-center justify-center px-8 py-4 bg-white text-purple-600 font-bold rounded-lg hover:shadow-lg smooth-transition"
-            >
-              <i class="fas fa-lock mr-2"></i> Admin Panel
-            </a>
-            <a
-              href="student.html"
-              class="flex items-center justify-center px-8 py-4 bg-purple-600 text-white font-bold rounded-lg border-2 border-white hover:bg-white hover:text-purple-600 smooth-transition"
-            >
-              <i class="fas fa-graduation-cap mr-2"></i> Student Portal
-            </a>
+      <!-- Right Image -->
+      <div class="animate-fade-in floating">
+        <div class="glass-effect rounded-3xl p-8 shadow-2xl">
+          <div class="bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl p-8 text-white text-center">
+            <div class="text-6xl mb-4">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <p class="text-xl font-bold mb-2">Dashboard</p>
+            <p class="text-sm opacity-90">
+              Beautiful analytics and management interface
+            </p>
           </div>
-          <div class="grid grid-cols-3 gap-6 mt-12">
-            <div>
-              <p class="text-3xl font-bold text-white">100%</p>
-              <p class="text-gray-200 text-sm">Responsive</p>
+          <div class="grid grid-cols-2 gap-4 mt-6">
+            <div class="bg-white rounded-lg p-4 text-center">
+              <p class="text-2xl font-bold gradient-text">5+</p>
+              <p class="text-xs text-gray-600">Modules</p>
             </div>
-            <div>
-              <p class="text-3xl font-bold text-white">⚡</p>
-              <p class="text-gray-200 text-sm">Fast & Secure</p>
-            </div>
-            <div>
-              <p class="text-3xl font-bold text-white">🔥</p>
-              <p class="text-gray-200 text-sm">Ready</p>
-              
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Image -->
-        <div class="animate-fade-in floating">
-          <div class="glass-effect rounded-3xl p-8 shadow-2xl">
-            <div
-              class="bg-gradient-to-br from-purple-400 to-pink-400 rounded-2xl p-8 text-white text-center"
-            >
-              <div class="text-6xl mb-4">
-                <i class="fas fa-chart-line"></i>
-              </div>
-              <p class="text-xl font-bold mb-2">Dashboard</p>
-              <p class="text-sm opacity-90">
-                Beautiful analytics and management interface
-              </p>
-            </div>
-            <div class="grid grid-cols-2 gap-4 mt-6">
-              <div class="bg-white rounded-lg p-4 text-center">
-                <p class="text-2xl font-bold gradient-text">5+</p>
-                <p class="text-xs text-gray-600">Modules</p>
-              </div>
-              <div class="bg-white rounded-lg p-4 text-center">
-                <p class="text-2xl font-bold gradient-text">∞</p>
-                <p class="text-xs text-gray-600">Scalable</p>
-              </div>
+            <div class="bg-white rounded-lg p-4 text-center">
+              <p class="text-2xl font-bold gradient-text">∞</p>
+              <p class="text-xs text-gray-600">Scalable</p>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Features Section -->
-    <section id="features" class="relative z-10 px-4 md:px-8 py-20">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-4xl md:text-5xl font-bold text-center text-white mb-6">
-          Powerful Features
-        </h2>
-        <p class="text-center text-gray-200 text-lg mb-16 max-w-2xl mx-auto">
-          Everything you need to manage exams efficiently and effectively
-        </p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Feature 1 -->
-          <div class="feature-card card-hover">
-            <div class="feature-icon">
-              <i class="fas fa-users"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-3">Student Management</h3>
-            <p class="text-gray-200">
-              Upload, manage, and track students with easy Excel import
-            </p>
-          </div>
 
-          <!-- Feature 2 -->
-          <div class="feature-card card-hover">
-            <div class="feature-icon">
-              <i class="fas fa-book"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-3">Study Materials</h3>
-            <p class="text-gray-200">
-              Manage and distribute study materials with secure PDF viewer
-            </p>
-          </div>
+  <!-- Footer 
+  <footer class="relative z-10 border-t border-white border-opacity-20 px-4 md:px-8 py-12 text-center text-gray-100">
+    <p class="mb-4">
+      Exam Management System • Built with
+      <span class="text-pink-400">❤️</span> for modern education
+    </p>
+    <p class="text-sm text-gray-300">
+      <strong>Admin Credentials:</strong> admin / Admin@123
+    </p>
+    <p class="text-xs text-gray-400 mt-4">
+      © 2024 All Rights Reserved. Privacy Policy • Terms of Service
+    </p>
+  </footer>-->
+</body>
 
-          <!-- Feature 3 -->
-          <div class="feature-card card-hover">
-            <div class="feature-icon">
-              <i class="fas fa-clipboard-list"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-3">Exam Management</h3>
-            <p class="text-gray-200">
-              Schedule exams with time-based opening and closing
-            </p>
-          </div>
-
-          <!-- Feature 4 -->
-          <div class="feature-card card-hover">
-            <div class="feature-icon">
-              <i class="fas fa-chart-bar"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-3">Results Tracking</h3>
-            <p class="text-gray-200">
-              Upload and manage exam results with easy access
-            </p>
-          </div>
-
-          <!-- Feature 5 -->
-          <div class="feature-card card-hover">
-            <div class="feature-icon">
-              <i class="fas fa-bell"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-3">Notifications</h3>
-            <p class="text-gray-200">
-              Send announcements with scheduled time windows
-            </p>
-          </div>
-
-          <!-- Feature 6 -->
-          <div class="feature-card card-hover">
-            <div class="feature-icon">
-              <i class="fas fa-mobile-alt"></i>
-            </div>
-            <h3 class="text-2xl font-bold mb-3">Fully Responsive</h3>
-            <p class="text-gray-200">
-              Perfect experience on all devices - mobile, tablet, desktop
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Testimonials/Benefits Section -->
-    <section id="about" class="relative z-10 px-4 md:px-8 py-20">
-      <div class="max-w-4xl mx-auto">
-        <div class="glass-effect rounded-3xl p-8 md:p-16">
-          <h2
-            class="text-4xl md:text-5xl font-bold text-gray-800 mb-8 text-center"
-          >
-            Why Choose Our System?
-          </h2>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="flex gap-4">
-              <div class="text-3xl text-purple-600 flex-shrink-0">
-                <i class="fas fa-shield-alt"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">
-                  Secure & Safe
-                </h3>
-                <p class="text-gray-600">
-                  Satya-backed security with authentication and encrypted
-                  storage
-                </p>
-              </div>
-            </div>
-
-            <div class="flex gap-4">
-              <div class="text-3xl text-purple-600 flex-shrink-0">
-                <i class="fas fa-bolt"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">
-                  Lightning Fast
-                </h3>
-                <p class="text-gray-600">
-                  Optimized performance with minimal loading times
-                </p>
-              </div>
-            </div>
-
-            <div class="flex gap-4">
-              <div class="text-3xl text-purple-600 flex-shrink-0">
-                <i class="fas fa-paint-brush"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">
-                  Beautiful Design
-                </h3>
-                <p class="text-gray-600">
-                  Modern UI with glassmorphism and smooth animations
-                </p>
-              </div>
-            </div>
-
-            <div class="flex gap-4">
-              <div class="text-3xl text-purple-600 flex-shrink-0">
-                <i class="fas fa-code"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold text-gray-800 mb-2">
-                  Modern Stack
-                </h3>
-                <p class="text-gray-600">
-                  Built with latest web technologies and best practices
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="mt-12 p-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl text-white text-center"
-          >
-            <h3 class="text-2xl font-bold mb-2">Ready to Get Started?</h3>
-            <p class="mb-6">Choose your role and access the system</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="admin.html"
-                class="px-6 py-3 bg-white text-purple-600 font-bold rounded-lg hover:shadow-lg smooth-transition"
-              >
-                <i class="fas fa-lock mr-2"></i> Admin Login
-              </a>
-              <a
-                href="student.html"
-                class="px-6 py-3 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-purple-600 smooth-transition"
-              >
-                <i class="fas fa-graduation-cap mr-2"></i> Student Portal
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer
-      class="relative z-10 border-t border-white border-opacity-20 px-4 md:px-8 py-12 text-center text-gray-100"
-    >
-      <p class="mb-4">
-        Exam Management System • Built with
-        <span class="text-pink-400">❤️</span> for modern education
-      </p>
-      <p class="text-sm text-gray-300">
-        <strong>Admin Credentials:</strong> admin / Admin@123
-      </p>
-      <p class="text-xs text-gray-400 mt-4">
-        © 2024 All Rights Reserved. Privacy Policy • Terms of Service
-      </p>
-    </footer>
-  </body>
 </html>
